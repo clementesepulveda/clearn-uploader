@@ -16,16 +16,33 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
     let test_case_files = []
     if ("files" in config) {
         config['files'].forEach(async file => {
+            if (!("isCommon" in file)) {
+                throw Error(`${file.path} no tiene el atributo isCommon`)
+            }
+            if (!("path" in file)) {
+                throw Error(`File no tiene path.`)
+            }
+
             if (!file.isCommon) {
+                if (!(`test_cases/${testCase}/${file.path}` in zipData)) {
+                    throw Error(`No existe el archivo ${file.path}`)
+                }
                 test_case_files.push({
                     "path": file.path,
-                    "permissions": "none",
-                    "content": await zipData['common/' + file.path].async('text')
+                    "permissions": file.permissions,
+                    "selectNew": true,
+                    "contentNew": await zipData[`test_cases/${testCase}/${file.path}`].async('text'),
                 })
             }
         })
     }
 
+    if (!(`test_cases/${testCase}/input.txt` in zipData)) {
+        throw Error(`No existe un input.txt`)
+    }
+    if (!(`test_cases/${testCase}/output.txt` in zipData)) {
+        throw Error(`No existe un output.txt`)
+    }
     const testcase_variables = {
         "data": {
             "questionId": questionId,
@@ -39,6 +56,8 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
         }
     }
 
+    console.log(testcase_variables)
+
     const body = {"query": testcase_mutation, "variables": testcase_variables}
     const headers = {
         "Content-Type": "application/json",
@@ -50,8 +69,11 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
         headers: headers,
         body: JSON.stringify(body),
     }) 
+
     console.log(response)
-    // TODO check if error
+    if (!response.ok){
+        throw Error(`Error del servidor. ${response}`)
+    }
 }
 
 export async function uploader(BEAREN_TOKEN, questionId, exerciseTitle, config, zipData, URL) {
@@ -72,6 +94,8 @@ export async function uploader(BEAREN_TOKEN, questionId, exerciseTitle, config, 
     }
     `;
 
+    console.log(config)
+    console.log(zipData)
     const source = [
         {
             "path": "code.py",
@@ -91,26 +115,30 @@ export async function uploader(BEAREN_TOKEN, questionId, exerciseTitle, config, 
             if (file.isCommon) {
                 source.push({
                     "path": file.path,
-                    "permissions": "none",
+                    "permissions": file.permissions,
                     "content": await zipData['common/' + file.path].async('text')
                 })
             } else {
                 source.push({
                     "path": file.path,
-                    "permissions": "none",
+                    "permissions": file.permissions,
                     "content": ''
                 })
             }
         })
     }
     
+    if (!('instructions.md' in zipData)) {
+        throw Error('No está el archivo instructions.md');
+    }
+
     const question_variables = {
         "data": {
             "title": exerciseTitle,
             "description": await zipData['instructions.md'].async('text'),
             "code": {
                 "source": source,
-                "input": {"entry": config['entry']},
+                "input": {"entry": config['entry']==="code.py" ? "code.py" : "main.py"},
             },
             "programmingLanguage": "Python",
         },
