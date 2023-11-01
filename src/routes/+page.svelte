@@ -3,6 +3,7 @@
     import { uploader, subir_test_case } from './uploader.js';
 	import { BarLoader } from 'svelte-loading-spinners';
     import Error from '../components/Error.svelte';
+    import ProgressBar from '../components/ProgressBar.svelte';
 
     let token = '';
     let exerciseName = '';
@@ -14,6 +15,8 @@
     let didntPutQuestionId = false;
 
     let zipFile = null;
+    let uploadingProgress = 0;
+    let totalFilesToUpload = 0;
     let errors = [];
 
     let isLoading = false;
@@ -49,19 +52,28 @@
         const data = await zipData.files
 
         isLoading = true;
+        uploadingProgress = 0;
+        totalFilesToUpload = 100;
 
+        if (!('config.json' in data)) {
+            throw `No existe el archivo config.json`
+        }
         let config = await data['config.json'].async('text')
         config = JSON.parse(config)
 
         // archivos iniciales
         uploader(token, exerciseToken, exerciseName, config, data, url)
-
+        
+        totalFilesToUpload = config['public'] + config['private']
         // test cases
         for (let i = 0; i < config['public']; i++) {
             await subir_test_case(i, true, token, exerciseToken, config, data, url)
+            uploadingProgress += 1
+            console.log(uploadingProgress, totalFilesToUpload)
         }
         for (let i = config['public']; i < config['public'] + config['private']; i++) {
             await subir_test_case(i, false, token, exerciseToken, config, data, url)
+            uploadingProgress += 1
         }
 
         isLoading = false;
@@ -70,7 +82,7 @@
         console.error(`Error: ${err}`);
         errors.push(err)
         errors = errors; // stupid svelte update
-        
+
         isLoading = false;
       }
     };
@@ -128,7 +140,7 @@
         <br>
 
         {#if isLoading}
-            <BarLoader size="60" color="#FF3E00" unit="px" duration="1s" />
+            <ProgressBar progress={uploadingProgress} total={totalFilesToUpload}></ProgressBar>
         {:else}
             <button on:click={handleUnzipAndRead}>Upload</button>
         {/if}

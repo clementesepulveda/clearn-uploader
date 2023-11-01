@@ -1,3 +1,5 @@
+import { error } from "@sveltejs/kit";
+
 export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, questionId, config, zipData, URL) {
     const testcase_mutation = `
     mutation CreateTestCase($data: CreateTestCase!) {
@@ -12,20 +14,24 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
     `;
 
     const testCase = String(testCaseIndex).padStart(2, '0')
+    let errorThrown = ""
 
     let test_case_files = []
     if ("files" in config) {
         config['files'].forEach(async file => {
             if (!("isCommon" in file)) {
-                throw Error(`${file.path} no tiene el atributo isCommon`)
+                errorThrown = `Test case ${testCaseIndex}, ${file.path} no tiene el atributo isCommon`;
+                throw Error();
             }
             if (!("path" in file)) {
-                throw Error(`File no tiene path.`)
+                errorThrown = `Test case ${testCaseIndex}, File no tiene path.`;
+                throw Error(`Test case ${testCaseIndex}, File no tiene path.`);
             }
 
             if (!file.isCommon) {
                 if (!(`test_cases/${testCase}/${file.path}` in zipData)) {
-                    throw Error(`No existe el archivo ${file.path}`)
+                    errorThrown = `Test case ${testCaseIndex}, No existe el archivo ${file.path}`;
+                    throw Error();
                 }
                 test_case_files.push({
                     "path": file.path,
@@ -37,12 +43,16 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
         })
     }
 
+    if (errorThrown !== "") {
+        throw Error(errorThrown)
+    }
     if (!(`test_cases/${testCase}/input.txt` in zipData)) {
-        throw Error(`No existe un input.txt`)
+        throw Error(`Test case ${testCaseIndex}, No existe un input.txt`)
     }
     if (!(`test_cases/${testCase}/output.txt` in zipData)) {
-        throw Error(`No existe un output.txt`)
+        throw Error(`Test case ${testCaseIndex}, No existe un output.txt`)
     }
+
     const testcase_variables = {
         "data": {
             "questionId": questionId,
@@ -55,8 +65,6 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
             "points": !isPublic ? 10 : 0, 
         }
     }
-
-    console.log(testcase_variables)
 
     const body = {"query": testcase_mutation, "variables": testcase_variables}
     const headers = {
@@ -72,7 +80,7 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
 
     console.log(response)
     if (!response.ok){
-        throw Error(`Error del servidor. ${response}`)
+        throw Error(`Test case ${testCaseIndex}, Error del servidor: ${response}`)
     }
 }
 
@@ -94,8 +102,6 @@ export async function uploader(BEAREN_TOKEN, questionId, exerciseTitle, config, 
     }
     `;
 
-    console.log(config)
-    console.log(zipData)
     const source = [
         {
             "path": "code.py",

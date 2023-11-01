@@ -13,8 +13,8 @@
 
 <style>
     #error {
-        background-color: red;
-        /* position: absolute; */
+        background-color: #C12F2F;
+        color: white;
 
         width: 15rem;
         border: solid black 5px;
