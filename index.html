@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="./_app/immutable/assets/2.ea1a9727.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.6cd2a68e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.b95eede2.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.35ba8fe8.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.62b29003.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.b7253810.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.b0ca27be.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.c5cddbc1.js">
+	</head>
+	<body style="margin:0" data-sveltekit-preload-data="hover">
+		<div style="display: contents">  <main class="svelte-bmbr7s"><h1 class="svelte-bmbr7s" data-svelte-h="svelte-2kkpx1">Clearn Uploader</h1> <div id="inputs" class="svelte-bmbr7s"><h3 class="svelte-bmbr7s" data-svelte-h="svelte-j62laj">Url</h3> <select class="svelte-bmbr7s"><option value="https://production-dot-clearn-project.wl.r.appspot.com/" data-svelte-h="svelte-3nnca6">https://production-dot-clearn-project.wl.r.appspot.com/</option><option value="https://clearn-project.wl.r.appspot.com/" data-svelte-h="svelte-18trg9u">https://clearn-project.wl.r.appspot.com/</option></select> <br> <h3 class="svelte-bmbr7s" data-svelte-h="svelte-zynzi9">Token de usuario Clearn</h3> <input type="text" placeholder="Token de usuario Clearn" class="svelte-bmbr7s" value=""> <br> <h3 class="svelte-bmbr7s" data-svelte-h="svelte-1oi2qgl">Id del Ejercicio</h3> <input type="text" placeholder="Id del Ejercicio Creado" class="svelte-bmbr7s" value=""> <br> <h3 class="svelte-bmbr7s" data-svelte-h="svelte-vqv432">Nombre Nuevo</h3> <input type="text" placeholder="Nombre Nuevo del Ejercicio" class="svelte-bmbr7s" value=""> <br> <h3 class="svelte-bmbr7s" data-svelte-h="svelte-jzo3v7">Archivos dentro de zip</h3> <input type="file" accept=".zip" class="svelte-bmbr7s"> <br> <button class="svelte-bmbr7s" data-svelte-h="svelte-orckoc">Upload</button></div> </main> 
+			
+			<script>
+				{
+					__sveltekit_jtdjf4 = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.6cd2a68e.js"),
+						import("./_app/immutable/entry/app.62b29003.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
