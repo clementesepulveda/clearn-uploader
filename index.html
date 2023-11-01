@@ -5,21 +5,21 @@
 		<link rel="icon" href="./favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
-		<link href="./_app/immutable/assets/2.47645a12.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.4c8fd37c.js">
+		<link href="./_app/immutable/assets/2.f0fe751d.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.1d31d269.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.c3366b7f.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.14a79e15.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.c0a7e7b1.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/index.b1be5633.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/0.113dc4e1.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/2.f0ed8fc9.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.61c7ca57.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.8e3405f2.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.c2996f13.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.1a03b22d.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.6697b401.js">
 	</head>
 	<body style="margin:0" data-sveltekit-preload-data="hover">
-		<div style="display: contents">  <main class="svelte-10pauqo"><h1 class="svelte-10pauqo" data-svelte-h="svelte-2kkpx1">Clearn Uploader</h1> <div id="inputs" class="svelte-10pauqo"><h3 class="svelte-10pauqo" data-svelte-h="svelte-j62laj">Url</h3> <select class="svelte-10pauqo"><option value="https://production-dot-clearn-project.wl.r.appspot.com/" data-svelte-h="svelte-3nnca6">https://production-dot-clearn-project.wl.r.appspot.com/</option><option value="https://clearn-project.wl.r.appspot.com/" data-svelte-h="svelte-18trg9u">https://clearn-project.wl.r.appspot.com/</option></select> <br> <h3 class="svelte-10pauqo" data-svelte-h="svelte-zynzi9">Token de usuario Clearn</h3> <input type="text" placeholder="Token de usuario Clearn" class=" svelte-10pauqo" value=""> <br> <h3 class="svelte-10pauqo" data-svelte-h="svelte-1oi2qgl">Id del Ejercicio</h3> <input type="text" placeholder="Id del Ejercicio Creado" class=" svelte-10pauqo" value=""> <br> <h3 class="svelte-10pauqo" data-svelte-h="svelte-vqv432">Nombre Nuevo</h3> <input type="text" placeholder="Nombre Nuevo del Ejercicio" class=" svelte-10pauqo" value=""> <br> <h3 class="svelte-10pauqo" data-svelte-h="svelte-jzo3v7">Archivos dentro de zip</h3> <input type="file" accept=".zip" class="svelte-10pauqo"> <br> <button class="svelte-10pauqo" data-svelte-h="svelte-orckoc">Upload</button></div> </main> 
+		<div style="display: contents">  <div id="errors" class="svelte-1yuz88d"></div> <main class="svelte-1yuz88d"><h1 class="svelte-1yuz88d" data-svelte-h="svelte-2kkpx1">Clearn Uploader</h1> <div id="inputs" class="svelte-1yuz88d"><h3 class="svelte-1yuz88d" data-svelte-h="svelte-j62laj">Url</h3> <select class="svelte-1yuz88d"><option value="https://production-dot-clearn-project.wl.r.appspot.com/" data-svelte-h="svelte-3nnca6">https://production-dot-clearn-project.wl.r.appspot.com/</option><option value="https://clearn-project.wl.r.appspot.com/" data-svelte-h="svelte-18trg9u">https://clearn-project.wl.r.appspot.com/</option></select> <br> <h3 class="svelte-1yuz88d" data-svelte-h="svelte-zynzi9">Token de usuario Clearn</h3> <input type="text" placeholder="Token de usuario Clearn" class=" svelte-1yuz88d" value=""> <br> <h3 class="svelte-1yuz88d" data-svelte-h="svelte-1oi2qgl">Id del Ejercicio</h3> <input type="text" placeholder="Id del Ejercicio Creado" class=" svelte-1yuz88d" value=""> <br> <h3 class="svelte-1yuz88d" data-svelte-h="svelte-vqv432">Nombre Nuevo</h3> <input type="text" placeholder="Nombre Nuevo del Ejercicio" class=" svelte-1yuz88d" value=""> <br> <h3 class="svelte-1yuz88d" data-svelte-h="svelte-jzo3v7">Archivos dentro de zip</h3> <input type="file" accept=".zip" class="svelte-1yuz88d"> <br> <button class="svelte-1yuz88d" data-svelte-h="svelte-orckoc">Upload</button></div> </main> 
 			
 			<script>
 				{
-					__sveltekit_lbqe49 = {
+					__sveltekit_15j7mz5 = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						env: {}
 					};
@@ -29,8 +29,8 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.4c8fd37c.js"),
-						import("./_app/immutable/entry/app.c0a7e7b1.js")
+						import("./_app/immutable/entry/start.1d31d269.js"),
+						import("./_app/immutable/entry/app.8e3405f2.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 2],
