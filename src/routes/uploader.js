@@ -59,7 +59,7 @@ export async function subir_test_case(testCaseIndex, isPublic, BEARER_TOKEN, que
             "isPublic": isPublic,
             "expectedOutput": await zipData[`test_cases/${testCase}/output.txt`].async('text'),
             "input": {
-                "stdin": await zipData[`test_cases/${testCase}/output.txt`].async('text'),
+                "stdin": await zipData[`test_cases/${testCase}/input.txt`].async('text'),
                 "code": {"files": test_case_files},
             },
             "points": !isPublic ? 10 : 0, 
