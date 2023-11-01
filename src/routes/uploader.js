@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, questionId, config, zipData, URL) {
+export async function subir_test_case(testCaseIndex, isPublic, BEARER_TOKEN, questionId, config, zipData, URL) {
     const testcase_mutation = `
     mutation CreateTestCase($data: CreateTestCase!) {
       createTestCase(data: $data) {
@@ -69,7 +69,7 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
     const body = {"query": testcase_mutation, "variables": testcase_variables}
     const headers = {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${BEAREN_TOKEN}`,
+        "Authorization": `Bearer ${BEARER_TOKEN}`,
     }
 
     const response = await fetch(URL, {
@@ -84,11 +84,12 @@ export async function subir_test_case(testCaseIndex, isPublic, BEAREN_TOKEN, que
     }
 }
 
-export async function uploader(BEAREN_TOKEN, questionId, exerciseTitle, config, zipData, URL) {
-    
+export async function uploader(BEARER_TOKEN, questionId, exerciseTitle, config, zipData, URL) {
+    await delete_test_cases(questionId, URL, BEARER_TOKEN);
+
     const headers = {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${BEAREN_TOKEN}`,
+        "Authorization": `Bearer ${BEARER_TOKEN}`,
     }
 
     const question_mutation = `
@@ -162,4 +163,82 @@ export async function uploader(BEAREN_TOKEN, questionId, exerciseTitle, config, 
     }) 
     console.log(response)
     // TODO check if error
+}
+
+export async function delete_test_cases(questionId, URL, BEARER_TOKEN) {
+    const delete_mutation = `
+    mutation DeleteTestCase($where: DeleteTestCaseFilter!) {
+        deleteTestCase(where: $where) {
+            id
+        }
+    }`
+
+    const test_ids = await get_tests_from_question(questionId, URL, BEARER_TOKEN)
+    
+    for (let i = 0; i < test_ids.length; i++) {
+        const tid = test_ids[i];
+        const variables = {"where": {"id": tid}}
+        const body = {"query": delete_mutation, "variables": variables}
+        
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${BEARER_TOKEN}`,
+        }
+        
+        await fetch(URL, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(body),
+        }) 
+    }
+}
+
+async function get_tests_from_question(question_id, URL, BEARER_TOKEN){
+    const headers = {
+        "Content-Type": "application/json", 
+        "Authorization": `Bearer ${BEARER_TOKEN}`
+    }
+
+    const query = `
+    query TestCasesFromQuestion($where: QuestionsFilter) {
+    questions(where: $where) {
+    publicTestCases {
+      id
+    }
+    secretTestCases {
+      id
+    }
+    }
+    }`
+    
+    const variables = {
+        "where": {
+            "id": {
+                "equals": question_id
+            }
+        }
+    }
+    
+    const body = {"query": query, "variables": variables}
+    
+    // Send the POST request to the GraphQL endpoint
+    const response = await fetch(URL, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body),
+    }) 
+
+    const data = await response.json()
+
+    // const data = json.loads(response.text)
+
+    const publicTestCases = data.data.questions[0].publicTestCases;
+    const secretTestCases = data.data.questions[0].secretTestCases;
+    
+    const test_ids = [
+        ...publicTestCases.map(test => test.id),
+        ...secretTestCases.map(test => test.id)
+    ];
+
+    return test_ids
 }

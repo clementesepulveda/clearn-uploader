@@ -69,7 +69,6 @@
         for (let i = 0; i < config['public']; i++) {
             await subir_test_case(i, true, token, exerciseToken, config, data, url)
             uploadingProgress += 1
-            console.log(uploadingProgress, totalFilesToUpload)
         }
         for (let i = config['public']; i < config['public'] + config['private']; i++) {
             await subir_test_case(i, false, token, exerciseToken, config, data, url)
