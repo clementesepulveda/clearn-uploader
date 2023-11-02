@@ -13,6 +13,7 @@
     let didntPutToken = false;
     let didntPutName = false;
     let didntPutQuestionId = false;
+    let onlyTestCases = true;
 
     let zipFile = null;
     let uploadingProgress = 0;
@@ -62,7 +63,9 @@
         config = JSON.parse(config)
 
         // archivos iniciales
-        uploader(token, exerciseToken, exerciseName, config, data, url)
+        if (!onlyTestCases) {
+            uploader(token, exerciseToken, exerciseName, config, data, url)
+        }
         
         totalFilesToUpload = config['public'] + config['private']
         // test cases
@@ -132,6 +135,15 @@
             placeholder="Nombre Nuevo del Ejercicio"  
             class={didntPutName ? "invalid-input" : ""}
         />
+        <br>
+        
+        <h3>Solo subir Test Cases</h3>
+        <div>
+            <input 
+                type="checkbox" 
+                bind:checked={onlyTestCases} 
+            />
+        </div>
         <br>
         
         <h3>Archivos dentro de zip</h3>
@@ -217,6 +229,14 @@
 
     input[type=text] {
         padding: 1rem 0.5rem;
+    }
+
+    input[type=checkbox] {
+        background-color: red;
+        /* outline: 5px solid black; */
+        /* border: px solid black; */
+        height: 3.2rem;
+        width: 3.2rem;
     }
 
     select {
