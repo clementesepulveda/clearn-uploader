@@ -219,6 +219,23 @@
         padding: 1rem 0.5rem;
     }
 
+    input[type=text], select {
+        border: 5px solid black;
+        border-radius: 5px;
+    }
+
+    input[type=text] {
+        padding: 1rem 0.5rem;
+    }
+
+    input[type=checkbox] {
+        background-color: red;
+        /* outline: 5px solid black; */
+        /* border: px solid black; */
+        height: 3.2rem;
+        width: 3.2rem;
+    }
+
     select {
         padding: 1rem 0.5rem;
     }
