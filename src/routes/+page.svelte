@@ -64,7 +64,7 @@
 
         // archivos iniciales
         if (!onlyTestCases) {
-            uploader(token, exerciseToken, exerciseName, config, data, url)
+            await uploader(token, exerciseToken, exerciseName, config, data, url)
         }
         
         totalFilesToUpload = config['public'] + config['private']
