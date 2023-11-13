@@ -57,7 +57,7 @@ export async function subir_test_case(testCaseIndex, isPublic, BEARER_TOKEN, que
         "data": {
             "questionId": questionId,
             "isPublic": isPublic,
-            "expectedOutput": await zipData[`test_cases/${testCase}/output.txt`].async('text'),
+            "expectedOutput": (await zipData[`test_cases/${testCase}/output.txt`].async('text')).replace(/\r\n|\r|\n/g, '\n').trim(),
             "input": {
                 "stdin": await zipData[`test_cases/${testCase}/input.txt`].async('text'),
                 "code": {"files": test_case_files},
@@ -78,15 +78,13 @@ export async function subir_test_case(testCaseIndex, isPublic, BEARER_TOKEN, que
         body: JSON.stringify(body),
     }) 
 
-    console.log(response)
+    console.log("new test case", response)
     if (!response.ok){
         throw Error(`Test case ${testCaseIndex}, Error del servidor: ${response}`)
     }
 }
 
 export async function uploader(BEARER_TOKEN, questionId, exerciseTitle, config, zipData, URL) {
-    await delete_test_cases(questionId, URL, BEARER_TOKEN);
-
     const headers = {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${BEARER_TOKEN}`,
@@ -161,7 +159,7 @@ export async function uploader(BEARER_TOKEN, questionId, exerciseTitle, config, 
         headers: headers,
         body: JSON.stringify(payload),
     }) 
-    console.log(response)
+    console.log("instructions.md UPLOADED", response)
     // TODO check if error
 }
 
@@ -185,11 +183,12 @@ export async function delete_test_cases(questionId, URL, BEARER_TOKEN) {
             "Authorization": `Bearer ${BEARER_TOKEN}`,
         }
         
-        await fetch(URL, {
+        const response = await fetch(URL, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(body),
-        }) 
+        })
+        console.log("DELETING",response)
     }
 }
 
@@ -229,6 +228,7 @@ async function get_tests_from_question(question_id, URL, BEARER_TOKEN){
     }) 
 
     const data = await response.json()
+    console.log("Questions To Delete",data)
 
     // const data = json.loads(response.text)
 

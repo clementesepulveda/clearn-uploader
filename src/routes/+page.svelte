@@ -1,6 +1,6 @@
 <script>
     import JSZip from 'jszip';
-    import { uploader, subir_test_case } from './uploader.js';
+    import { uploader, delete_test_cases, subir_test_case } from './uploader.js';
 	import { BarLoader } from 'svelte-loading-spinners';
     import Error from '../components/Error.svelte';
     import ProgressBar from '../components/ProgressBar.svelte';
@@ -62,10 +62,13 @@
         let config = await data['config.json'].async('text')
         config = JSON.parse(config)
 
+        delete_test_cases(exerciseToken, url, token);
+
         // archivos iniciales
         if (!onlyTestCases) {
-            uploader(token, exerciseToken, exerciseName, config, data, url)
+            await uploader(token, exerciseToken, exerciseName, config, data, url)
         }
+
         
         totalFilesToUpload = config['public'] + config['private']
         // test cases
