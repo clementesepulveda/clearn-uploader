@@ -62,7 +62,7 @@
         let config = await data['config.json'].async('text')
         config = JSON.parse(config)
 
-        delete_test_cases(exerciseToken, url, token);
+        await delete_test_cases(exerciseToken, url, token);
 
         // archivos iniciales
         if (!onlyTestCases) {

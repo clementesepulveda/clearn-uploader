@@ -240,5 +240,6 @@ async function get_tests_from_question(question_id, URL, BEARER_TOKEN){
         ...secretTestCases.map(test => test.id)
     ];
 
+    console.log("HELLO")
     return test_ids
 }
