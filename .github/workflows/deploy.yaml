@@ -11,6 +11,12 @@ jobs:
     steps:
       - name: git-checkout
         uses: actions/checkout@v2
+        
+      - name: Set Git identity
+        run: |
+          git config --global user.email "clemente.seplveda@uc.cl"
+          git config --global user.name "clementesepulveda"
+
 
       - name: Pull gh-pages branch
         run: git pull
