@@ -1,0 +1,23 @@
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: git-checkout
+        uses: actions/checkout@v2
+
+      - name: Pull gh-pages branch
+        run: git pull origin gh-pages
+        
+      - name: Install all dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run deploy
+        
