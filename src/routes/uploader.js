@@ -101,6 +101,11 @@ export async function uploader(BEARER_TOKEN, questionId, exerciseTitle, config, 
     }
     `;
 
+    if (!('starter_code.py' in zipData)) {
+        throw Error('No está el archivo starter_code.py');
+    }
+    
+
     const source = [
         {
             "path": "code.py",
@@ -113,7 +118,7 @@ export async function uploader(BEARER_TOKEN, questionId, exerciseTitle, config, 
             "permissions": "none",
         },
     ]
-
+    
     // just common files
     if ("files" in config) {
         config['files'].forEach(async file => {
@@ -240,6 +245,5 @@ async function get_tests_from_question(question_id, URL, BEARER_TOKEN){
         ...secretTestCases.map(test => test.id)
     ];
 
-    console.log("HELLO")
     return test_ids
 }
