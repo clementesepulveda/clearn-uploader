@@ -10,16 +10,23 @@ jobs:
     environment: production
     steps:
       - name: git-checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with: 
+          ref: 'gh-pages'
         
       - name: Set Git identity
         run: |
-          git config --global user.email "clemente.seplveda@uc.cl"
-          git config --global user.name "clementesepulveda"
+          pwd
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
 
 
       - name: Pull gh-pages branch
         run: git pull
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          force: true
         
       - name: Install all dependencies
         run: npm install
